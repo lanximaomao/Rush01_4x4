@@ -1,6 +1,7 @@
 
 #include "rush01.h"
 
+//may need to stay separate from the row/col vallue checker as the value will need to be already placed in this case
 void	get_relevant_boundaries(t_false *whatever, int y, int x)
 {
 	whatever->boundaries[0][x] -> from top to down

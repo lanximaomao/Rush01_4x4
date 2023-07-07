@@ -138,7 +138,7 @@ int	main(int argc, char **argv)
 	zero_arrays(&whatever);
 	if (process_input(argv[1], &whatever) == ERROR)
 		return (1);
-
+	
 	// TODO make algorithm
 	// TODO make solution printer
 	return (0);
