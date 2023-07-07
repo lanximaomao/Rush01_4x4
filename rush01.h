@@ -7,6 +7,8 @@
 # define ERROR 1
 # define SUCCESS 0
 
+#include <unistd.h>
+
 typedef	struct s_false_sudoku
 {
 	int	grid[GRID_SIZE][GRID_SIZE];
@@ -15,13 +17,15 @@ typedef	struct s_false_sudoku
 
 }	t_false;
 
-// typedef union u_grid {
-// 	int	grid_4[4][4];
-// 	int grid_5[5][5];
-// 	int	grid_6[6][6];
-// 	int	grid_7[7][7];
-// 	int grid_8[8][8];
-// 	int grid_9[9][9];
-// }	u_grid;
+typedef struct s_boundry_checker
+{
+	int	boundary;
+	int	base;
+	int	number_visible;
+}		t_boundary_checker;
+
+int	valid_placement(t_false *whatever, int y, int x, int to_check);
+int	check_all_bounds(t_false *whatever, int y, int x);
+int	solve_it(t_false *whatever, int row, int col);
 
 #endif

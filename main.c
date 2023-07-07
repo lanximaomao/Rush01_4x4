@@ -129,6 +129,30 @@ void	zero_arrays(t_false *whatever)
 	}
 }
 
+void print_result(t_false *whatever)
+{
+	int i;
+	int j;
+	char c;
+	
+
+	i = 0;
+	while (i < whatever->actual_size)
+	{
+		j = 0;
+		while (j < whatever->actual_size)
+		{
+			c = whatever->grid[i][j] + '0';
+			write(1, &c, 1);
+			if (j != whatever->actual_size - 1)
+				write(1, " ", 1);
+			j++;
+		}
+		i++;
+		write(1, "\n", 1);
+	}
+}
+
 int	main(int argc, char **argv)
 {
 	t_false	 whatever;
@@ -138,8 +162,10 @@ int	main(int argc, char **argv)
 	zero_arrays(&whatever);
 	if (process_input(argv[1], &whatever) == ERROR)
 		return (1);
-	
-	// TODO make algorithm
+	if (solve_it(&whatever, 0, 0) == 1)
+		print_result(&whatever);
+	else
+		write (1, "no solution found\n", 18);
 	// TODO make solution printer
 	return (0);
 }
