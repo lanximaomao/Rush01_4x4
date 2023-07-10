@@ -9,13 +9,13 @@
 
 #include <unistd.h>
 
-typedef	struct s_false_sudoku
+typedef	struct s_skyscraper
 {
 	int	grid[GRID_SIZE][GRID_SIZE];
 	int	boundaries[BOUNDARY_SIZE][GRID_SIZE];
 	int actual_size;
 
-}	t_false;
+}	t_skyscraper;
 
 typedef struct s_boundry_checker
 {
@@ -24,8 +24,8 @@ typedef struct s_boundry_checker
 	int	number_visible;
 }		t_boundary_checker;
 
-int	valid_placement(t_false *whatever, int y, int x, int to_check);
-int	check_all_bounds(t_false *whatever, int y, int x);
-int	solve_it(t_false *whatever, int row, int col);
+int	valid_placement(t_skyscraper *hm, int y, int x, int to_check);
+int	check_all_bounds(t_skyscraper *hm, int y, int x);
+int	solve_it(t_skyscraper *hm, int row, int col);
 
 #endif

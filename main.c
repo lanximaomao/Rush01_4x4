@@ -1,19 +1,6 @@
 
 #include "rush01.h"
-
-int	is_whitespace(char c)
-{
-	if (c == ' ' || c == '\t' || c == '\r')
-		return (1);
-	return (0);
-}
-
-int	ft_is_digit(char c)
-{
-	if (c >= '0' && c <= '9')
-		return (1);
-	return (0);
-}
+#include "utils.h"
 
 int	to_int(char **str, int flag)
 {
@@ -48,30 +35,35 @@ int	find_size(int index)
 		return (8);
 	else if (index == 36)
 		return (9);
-	else 
+	else
 		return (ERROR);
 }
 
-int	copy_and_validate(int raw_input[], t_false *whatever, int index)
+int	copy_and_validate(int raw_input[], t_skyscraper *hm, int index)
 {
 	int i;
 	int j;
 	int	k;
 
-	whatever->actual_size = find_size(index);
-	if (whatever->actual_size == ERROR)
-		return (ERROR);
-	
 	j = 0;
 	i = 0;
 	k = 0;
+	hm->actual_size = find_size(index);
+	if (hm->actual_size == ERROR)
+	{
+		ft_putendl_fd("what is your grid size?!", 2);
+		return (ERROR);
+	}
 	while (i < BOUNDARY_SIZE)
 	{
-		while (j < whatever->actual_size)
+		while (j < hm->actual_size)
 		{
-			if (raw_input[k] <= 0 || raw_input[k] > whatever->actual_size)
+			if (raw_input[k] <= 0 || raw_input[k] > hm->actual_size)
+			{
+				ft_putendl_fd("No zero is accepted", 2);
 				return (ERROR);
-			whatever->boundaries[i][j] = raw_input[k];
+			}
+			hm->boundaries[i][j] = raw_input[k];
 			j++;
 			k++;
 		}
@@ -81,7 +73,7 @@ int	copy_and_validate(int raw_input[], t_false *whatever, int index)
 	return (SUCCESS);
 }
 
-int	process_input(char *input, t_false *whatever)
+int	process_input(char *input, t_skyscraper *hm)
 {
 	char	*input_ptr;
 	int		raw_input[36]; // TODO make macro for this
@@ -93,14 +85,17 @@ int	process_input(char *input, t_false *whatever)
 	{
 		raw_input[index] = to_int(&input_ptr, index);
 		if (raw_input[index] == -1)
+		{
+			ft_putstr_fd("not a valid digit", 2);
 			return (ERROR);
+		}
 		index++;
 	}
-	if (*input_ptr || copy_and_validate(raw_input, whatever, index) == ERROR)
+	if (*input_ptr || copy_and_validate(raw_input, hm, index) == ERROR)
 		return (ERROR);
 	return (SUCCESS);
 }
-void	zero_arrays(t_false *whatever)
+void	zero_arrays(t_skyscraper *hm)
 {
 	int i;
 	int j;
@@ -111,7 +106,7 @@ void	zero_arrays(t_false *whatever)
 		j = 0;
 		while (j < GRID_SIZE)
 		{
-			whatever->grid[i][j] = 0;
+			hm->grid[i][j] = 0;
 			j++;
 		}
 		i++;
@@ -122,29 +117,29 @@ void	zero_arrays(t_false *whatever)
 		j = 0;
 		while (j < GRID_SIZE)
 		{
-			whatever->boundaries[i][j] = 0;
+			hm->boundaries[i][j] = 0;
 			j++;
 		}
 		i++;
 	}
 }
 
-void print_result(t_false *whatever)
+void print_result(t_skyscraper *hm)
 {
 	int i;
 	int j;
 	char c;
-	
+
 
 	i = 0;
-	while (i < whatever->actual_size)
+	while (i < hm->actual_size)
 	{
 		j = 0;
-		while (j < whatever->actual_size)
+		while (j < hm->actual_size)
 		{
-			c = whatever->grid[i][j] + '0';
+			c = hm->grid[i][j] + '0';
 			write(1, &c, 1);
-			if (j != whatever->actual_size - 1)
+			if (j != hm->actual_size - 1)
 				write(1, " ", 1);
 			j++;
 		}
@@ -153,19 +148,48 @@ void print_result(t_false *whatever)
 	}
 }
 
+//int	boundaries[BOUNDARY_SIZE][GRID_SIZE];
+void display_boundaries(t_skyscraper *hm)
+{
+	int i;
+	int j;
+	char c;
+
+	i = 0;
+	ft_putendl_fd("\nmy boundary conditions are:", 2);
+	while (i < BOUNDARY_SIZE)
+	{
+		j = 0;
+		while (j < hm->actual_size)
+		{
+			c = hm->boundaries[i][j] + '0';
+			write(1, &c, 1);
+			if (j != hm->actual_size - 1)
+				write(1, " ", 1);
+			j++;
+		}
+		i++;
+		write(1, "\n", 1);
+	}
+	write(1, "\n", 1);
+}
+
 int	main(int argc, char **argv)
 {
-	t_false	 whatever;
+	t_skyscraper	 hm;
 
 	if (argc != 2)
-		return (1); //TODO make error printer
-	zero_arrays(&whatever);
-	if (process_input(argv[1], &whatever) == ERROR)
-		return (1);
-	if (solve_it(&whatever, 0, 0) == 1)
-		print_result(&whatever);
+	{
+		ft_putendl_fd("wrong number of arguments.", 2);
+		return (ERROR);
+	}
+	zero_arrays(&hm);
+	if (process_input(argv[1], &hm) == ERROR)
+		return (ERROR);
+	display_boundaries(&hm);
+	if (solve_it(&hm, 0, 0) == 1)
+		print_result(&hm);
 	else
-		write (1, "no solution found\n", 18);
-	// TODO make solution printer
-	return (0);
+		ft_putendl_fd("no solution found.", 1);
+	return (SUCCESS);
 }

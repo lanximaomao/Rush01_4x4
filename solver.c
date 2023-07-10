@@ -1,35 +1,35 @@
 
 #include "rush01.h"
 
-int	existing_digit(t_false *whatever, int row, int col)
+int	existing_digit(t_skyscraper *hm, int row, int col)
 {
-	if ((col + 1) < whatever->actual_size)
-		return (solve_it(whatever, row, col + 1));
-	else if ((row + 1) < whatever->actual_size)
-		return (solve_it(whatever, row + 1, 0));
+	if ((col + 1) < hm->actual_size)
+		return (solve_it(hm, row, col + 1));
+	else if ((row + 1) < hm->actual_size)
+		return (solve_it(hm, row + 1, 0));
 	else
 		return (1);
 }
 
 // case of 0 digit: checks digits 1..actual size
-int	new_digit(t_false *whatever, int row, int col)
+int	new_digit(t_skyscraper *hm, int row, int col)
 {
 	int	max_index;
 	int	digit;
 
-	max_index = whatever->actual_size;
+	max_index = hm->actual_size;
 	digit = 1;
 	while (digit <= max_index)
 	{
-		if (valid_placement(whatever, row, col, digit))
+		if (valid_placement(hm, row, col, digit))
 		{
-			whatever->grid[row][col] = digit;
-			if (check_all_bounds(whatever, row, col) == 1)
+			hm->grid[row][col] = digit;
+			if (check_all_bounds(hm, row, col) == 1)
 			{
-				if (solve_it(whatever, row, col))
+				if (solve_it(hm, row, col))
 					return (1);
 			}
-			whatever->grid[row][col] = 0;
+			hm->grid[row][col] = 0;
 		}
 		digit++;
 	}
@@ -38,17 +38,16 @@ int	new_digit(t_false *whatever, int row, int col)
 
 // Returns 1 if the solution is found, otherwise 0.
 // Parameters: program struct, row, column.
-int	solve_it(t_false *whatever, int row, int col)
+int	solve_it(t_skyscraper *hm, int row, int col)
 {
-	
-	if (row >= whatever->actual_size || col >= whatever->actual_size)
+	if (row >= hm->actual_size || col >= hm->actual_size)
 		return (1);
 	else
 	{
-		if (whatever->grid[row][col] != 0)
-			return (existing_digit(whatever, row, col));
+		if (hm->grid[row][col] != 0)
+			return (existing_digit(hm, row, col));
 		else
-			return (new_digit(whatever, row, col));
+			return (new_digit(hm, row, col));
 		return (0);
 	}
 }
