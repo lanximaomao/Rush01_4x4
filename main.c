@@ -186,7 +186,7 @@ int	main(int argc, char **argv)
 	zero_arrays(&hm);
 	if (process_input(argv[1], &hm) == ERROR)
 		return (ERROR);
-	display_boundaries(&hm);
+	//display_boundaries(&hm);
 	if (solve_it(&hm, 0, 0) == 1)
 		print_result(&hm);
 	else
