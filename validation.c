@@ -1,7 +1,6 @@
 
 #include "rush01.h"
-
-//if col or row is full we may need to validate that number visible == boundary
+#include <stdio.h>
 
 int	check_colup(t_skyscraper *hm, int col)
 {
@@ -16,12 +15,7 @@ int	check_colup(t_skyscraper *hm, int col)
 	{
 		if (hm->grid[i][col] == 0)
 			i++;
-		else if (checker.base == 0)
-		{
-			checker.base = hm->grid[i++][col];
-			checker.number_visible++;
-		}
-		else if (hm->grid[i++][col] > checker.base)
+		else if (i <= hm->actual_size && hm->grid[i++][col] > checker.base)
 		{
 			checker.base = hm->grid[i - 1][col];
 			checker.number_visible++;
@@ -31,7 +25,6 @@ int	check_colup(t_skyscraper *hm, int col)
 	}
 	return (1);
 }
-
 
 int	check_coldown(t_skyscraper *hm, int col)
 {
@@ -46,12 +39,7 @@ int	check_coldown(t_skyscraper *hm, int col)
 	{
 		if (hm->grid[i][col] == 0)
 			i--;
-		else if (checker.base == 0)
-		{
-			checker.base = hm->grid[i--][col];
-			checker.number_visible++;
-		}
-		else if (hm->grid[i--][col] > checker.base)
+		else if (i >= 0 && hm->grid[i--][col] > checker.base)
 		{
 			checker.base = hm->grid[i + 1][col];
 			checker.number_visible++;
@@ -75,12 +63,7 @@ int	check_rowleft(t_skyscraper *hm, int row)
 	{
 		if (hm->grid[row][i] == 0)
 			i++;
-		else if (checker.base == 0)
-		{
-			checker.base = hm->grid[row][i++];
-			checker.number_visible++;
-		}
-		else if (hm->grid[row][i++] > checker.base)
+		else if (i <= hm->actual_size && hm->grid[row][i++] > checker.base)
 		{
 			checker.base = hm->grid[row][i - 1];
 			checker.number_visible++;
@@ -104,14 +87,9 @@ int	check_rowright(t_skyscraper *hm, int row)
 	{
 		if (hm->grid[row][i] == 0)
 			i--;
-		else if (checker.base == 0)
+		else if (i >= 0 && hm->grid[row][i--] > checker.base)
 		{
-			checker.base = hm->grid[row][i--];
-			checker.number_visible++;
-		}
-		else if (hm->grid[row][i--] > checker.base)
-		{
-			checker.base = hm->grid[row][i + 1];
+			checker.base = hm->grid[row][i+1];
 			checker.number_visible++;
 		}
 		if (checker.number_visible > checker.boundary)
@@ -132,21 +110,12 @@ int	check_all_bounds(t_skyscraper *hm, int row, int col)
 		return (0);
 	return (1);
 }
-	// checker[1].boundary = hm->boundaries[1][x];
-	// checker[2].boundary = hm->boundaries[2][y];
-	// checker[3].boundary = hm->boundaries[3][y];
-
-	// hm->boundaries[0][x] -> from top to down
-	// hm->boundaries[1][x] -> from bottom to up
-	// hm->boundaries[2][y] -> from left to right
-	// hm->boundaries[3][y] -> from right to left
 
 int	valid_placement(t_skyscraper *hm, int row, int col, int to_check)
 {
 	int	i;
 
 	i = 0;
-	// check for duplicate in col or row
 	while (i < hm->actual_size)
 	{
 		if (hm->grid[row][i] == to_check || hm->grid[i][col] == to_check)
