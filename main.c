@@ -146,6 +146,7 @@ void print_result(t_skyscraper *hm)
 		i++;
 		write(1, "\n", 1);
 	}
+	//write(1, "\n", 1);
 }
 
 //int	boundaries[BOUNDARY_SIZE][GRID_SIZE];
@@ -156,7 +157,7 @@ void display_boundaries(t_skyscraper *hm)
 	char c;
 
 	i = 0;
-	ft_putendl_fd("\nmy boundary conditions are:", 2);
+	ft_putendl_fd("\nmy boundary conditions are:", 1);
 	while (i < BOUNDARY_SIZE)
 	{
 		j = 0;
@@ -171,7 +172,7 @@ void display_boundaries(t_skyscraper *hm)
 		i++;
 		write(1, "\n", 1);
 	}
-	write(1, "\n", 1);
+	//write(1, "\n", 1);
 }
 
 int	main(int argc, char **argv)

@@ -1,3 +1,4 @@
+
 #include "rush01.h"
 
 int	solve_it(t_skyscraper *hm, int row, int col)
@@ -19,6 +20,7 @@ int	solve_it(t_skyscraper *hm, int row, int col)
 		if (valid_placement(hm, row, col, digit))
 		{
 			hm->grid[row][col] = digit;
+			//print_result(hm);
 			if (check_all_bounds(hm, row, col) == 1 && solve_it(hm, row, col))
 				return (1);
 		}

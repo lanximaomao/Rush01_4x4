@@ -27,5 +27,6 @@ typedef struct s_boundry_checker
 int	valid_placement(t_skyscraper *hm, int y, int x, int to_check);
 int	check_all_bounds(t_skyscraper *hm, int y, int x);
 int	solve_it(t_skyscraper *hm, int row, int col);
+void print_result(t_skyscraper *hm);
 
 #endif
